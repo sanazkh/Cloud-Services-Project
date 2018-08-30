@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Home</title>
+	<style>
+		input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+		input[type=password], select {
+    width: 100%;
+    padding: 12px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.label{
+	width: 100%;
+    padding: 12px;
+	
+}
+
+.btn{
+	width: 100%;
+    padding: 12px 20px;
+	font-size: large;
+	font-weight: bold;
+	border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.btnm{
+  width: 100%;
+    padding: 12px 20px;
+  font-size: large;
+  font-weight: bold;
+  border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+	</style>
+</head>
+<p id="demo"></p>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+ <script type="text/javascript" >
+
+//$(document).ready(function(){
+
+function load_dashboard() {
+console.log("Before ajax");
+var emailss=$("#email").val();
+console.log("Emailss entered:"+emailss);
+
+ jQuery.ajax({
+     url:"http://cloudserviceprojectapi.azurewebsites.net/api/Employees",
+     type:"GET",
+     contentType:'application/json',
+     dataType:"json",
+     success:function(data) {
+     	console.log("Entering");
+         var i=1; 
+         var emailEntered=$("#email").val();
+         var flag=true;;
+         console.log("Email entered:"+emailEntered);
+                
+
+           $.each(data, function (i, item) { 
+                var status;
+                var emailInAPI= item.email;
+                var managerFlag;
+      			var managerFlagInAPI= item.isManager;
+      			if(emailEntered==emailInAPI){
+      				managerFlag=managerFlagInAPI;
+
+                if(managerFlag==true){
+                console.log("isManager True");
+               location.href ="managerDashboard.html";
+
+              }
+              else{
+                console.log("isManager False");
+                location.href ="indexemp.html";
+              }
+            }
+            else{
+              flag=false;
+            }
+	
+    	        i++;
+
+             });
+           //If email not in databse
+          
+        
+     },
+});
+
+}
+
+</script>
+
+
+<body>
+
+
+
+<div >
+     <div style="margin: 0 auto; width: 40%; height: 380px;">
+     <div style="width: 90%; height: 370px; background-color: rgb(212, 215, 219); font-family: Arial, Helvetica, sans-serif; border: 1px solid #ccc;
+    border-radius: 4px; margin: 0 auto;">
+   <!--   <form style="width: 90%; height: 370px; background-color: rgb(212, 215, 219); font-family: Arial, Helvetica, sans-serif; border: 1px solid #ccc;
+    border-radius: 4px; margin: 0 auto;"> -->
+    <div class="container" style="padding: 40px;" >
+      <label class="label" style="padding-left: 0;"><b>Enter Email:*</b></label></br>
+      <input type="text" id="email" placeholder="Enter Email" name="ename" required="true">
+        </br> </br>
+      <label class="label" style="padding-left: 0;"><b>Enter Password:*</b></label> </br> 
+      <input type="password" id="password" placeholder="Enter Password" name="psw" required="true">
+        </br> </br> 
+
+     <!--  <button class="btn" type="submit">Login</button> -->
+     <button class="btn" type="submit" onclick="load_dashboard()">Login</button>
+     </br> </br> 
+     <button style="border: 1px solid #ccc;
+    border-radius: 4px;" ><img src="microsoftlg.png" alt="Microsoft Account" style="width: 36%;" /></button>
+      <!-- <input class="btn" type="button" value="Login" onclick="load_dashboard()"> -->
+      <!-- added code for google sign in button -->
+
+
+	  </br> </br>
+	  </br> </br>
+	  
+    </div>
+    <div>
+<!--  </form> -->
+      </div>
+	 
+	 
+</div>
+
+</body>
+</html>

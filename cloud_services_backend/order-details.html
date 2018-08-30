@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Employee - Bootstrap Admin Template</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <script type="text/javascript">
+
+//$(document).ready(function(){
+function load_customerdetails() {
+
+ jQuery.ajax({
+     url:"http://cloudserviceprojectapi.azurewebsites.net/api/OrderDetails",
+     type:"GET",
+     contentType:'application/json',
+     dataType:"json",
+     success:function(data) {
+         var i=1; 
+         $("#table-customer tbody tr").remove();
+             $.each(data, function (i, item) { 
+                var status;
+             $("#table-customer").append($('<tr/>').append($('<td/>').append(item.orderNumber)).append($('<td/>').append("<button type='button' id='"+i+"' style='background:none!important; color:inherit; border:none; padding:0!important; font: inherit; cursor: pointer; color:blue' data-toggle='modal' onclick='load_officedetails("+i+")' data-target='#myModal' >"+item.productCode+'</button>')).append($('<td/>').append(item.quantityOrdered)).append($('<td/>').append(item.priceEach)).append($('<td/>').append(item.orderLineNumber)).append($('<td/>').append(item.productLine)));
+                i++;
+                   
+         });
+        
+     },
+});
+
+}
+        
+window.onload = load_customerdetails;
+
+                    
+function load_officedetails(i) {
+//console.log("sanaz "+$("#table-employee #"+i).text());
+ jQuery.ajax({
+    
+     
+       url:"http://cloudserviceprojectapi.azurewebsites.net/api/Products?productCode=" + $("#table-customer #"+i).text(),
+    
+     type:"GET",
+     contentType:'application/json',
+     dataType:"json",
+     success:function(data) {
+         var i=1; 
+         $("#table-office tbody tr").remove();
+         console.log(data.productCode);
+                  
+             $("#table-office").append($('<tr/>').append($('<td/>').append(data.productCode)).append($('<td/>').append(data.productName)).append($('<td/>').append(data.productLine)).append($('<td/>').append(data.productVendor)).append($('<td/>').append(data.productDescription)).append($('<td/>').append(data.MSRP)));
+                
+       
+         console.log(data);
+     },
+});
+
+}
+
+
+</script>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+        
+            </div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Manager <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        </li>
+                        
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li >
+                        <a href="managerDashboard.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="employee-details.html"><i class="fa fa-fw fa-bar-chart-o"></i> Employee Details</a>
+                    </li>
+                    <li>
+                        <a href="customer-details.html"><i class="fa fa-fw fa-table"></i> Customer Details</a>
+                    </li>
+                     <li>
+                        <a href="payment-details.html"><i class="fa fa-fw fa-table"></i> Payment Details</a>
+                    </li>
+                    <li class="active">
+                        <a href="order-details.html"><i class="fa fa-fw fa-edit"></i> Order Details</a>
+                    </li>
+                   
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Tables
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li>
+                                <i class="fa fa-dashboard"></i>  <a href="managerDashboard.html">Dashboard</a>
+                            </li>
+                           
+                        </ol>
+                    </div>
+                </div>
+               
+                <div class="row">
+                   
+                    <div class="col-lg-6">
+                        <h2>Order Details</h2>
+                        <div class="table-customers">
+                            <table id="table-customer" class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Order Number</th>
+                                        <th>Product Code</th>
+                                        <th>Quantity Ordered</th>
+                                        <th>Price($)</th>
+                                        <th>Order Line Number</th>
+                                        <th>Product Line </th>
+                                     </tr>
+                                </thead>
+                                 <tbody>
+                                    <tr>
+                                    </tr>
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+   <!-- Modal content added!!-->
+    <div class="modal-content" style="width:900px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <!--  <h4 class="modal-title">Product Details</h4> -->
+       </div>
+      <div class="modal-body">
+       <!--  <div class="col-lg-6"> -->
+                        <h2>Product Details</h2>
+                        <div class="table-offices">
+                            <table id="table-office" class="table table-bordered table-hover table-striped" style="width:800px;">
+                                <thead>
+                                    <tr>
+                                        <th>Product Code</th>
+                                        <th>Product Name</th>
+                                        <th>Product Line</th>
+                                        <th>Product Vendor</th>
+                                        <th>Product Description</th>
+                                        <th>MSRP</th>
+                                    </tr>
+                                </thead>
+                                 <tbody>
+                                    <tr>
+                                    </tr>
+                                    </tbody>
+                            </table>
+                        </div>
+                    <!-- </div> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+</div>
+</div>
+
+
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
